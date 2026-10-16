@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>_21T1020851_Todo.BusinessLayers</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\21T1020851_Todo.DataLayers\21T1020851_Todo.DataLayers.csproj" />
+    <ProjectReference Include="..\21T1020851_Todo.DomainModels\21T1020851_Todo.DomainModels.csproj" />
+  </ItemGroup>
+
+</Project>
