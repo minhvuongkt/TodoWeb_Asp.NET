@@ -1,0 +1,19 @@
+﻿    @model TodoTaskSearchResult
+@if (HttpContextAccessor.HttpContext?.Session.GetInt32("UserID") == null)
+{
+    <div class="text-center">
+        <h1 class="display-4">Chào Mừng</h1>
+        <p>Bạn chưa đăng nhập. <a href="~/User/Authenticate?#Login">Đăng nhập/Đăng ký</a> để xem lịch trình của bạn nào :3.</p>
+    </div>
+}
+else
+{
+    if (Model.PageSetting.StyleView == 1)
+    {
+        await Html.RenderPartialAsync("_ViewList");
+    }
+    else
+    {
+        await Html.RenderPartialAsync("_ViewCard");
+    }
+}

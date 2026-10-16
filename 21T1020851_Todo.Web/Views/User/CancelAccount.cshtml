@@ -1,0 +1,28 @@
+﻿@{
+    Layout = null;
+}
+<div class="modal-dialog">
+    <div class="modal-content">
+        <form class="form-horizontal" action="~/User/CancelAccount/@HttpContextAccessor.HttpContext?.Session.GetInt32("UserID")" method="post">
+            <div class="modal-header bg-primary" style="background-color: #B64747">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title text-center">Huỷ bỏ tài khoản?</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label style="padding: 20px;">
+                        Việc bạn huỷ bỏ tài khoản đồng nghĩa với các dữ liệu liên quan cũng sẽ được xoá theo. Chúng tôi sẽ không chịu trách nhiệm về hành động này!
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-danger">
+                    <i class="fa fa-trash"></i> Xoá Tài Khoản
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Bỏ qua
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

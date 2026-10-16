@@ -1,0 +1,175 @@
+﻿@model TodoTaskSearchResult
+
+@if(Model.DataTodos == null || Model.RowCount < 1)
+{
+    if (ViewBag.NotHaveSearch == 0)
+    {
+        <div class="text-center">
+            <h1 class="display-4">Không tìm thấy công việc mà bạn muốn tìm rồi!</h1>
+            <p> <a href="~/">Quay Lại</a>.</p>
+        </div>
+    }
+    else
+    {
+        <div class="text-center">
+            <h1 class="display-4">Bạn chưa có công việc nào để hiển thị cả.</h1>
+            <p>Hãy thêm công việc cho mình ngay nào. <a href="~/Todo/Create">Tạo công việc mới</a>.</p>
+        </div>
+    }
+}
+else
+{
+<div class="box box-primary">
+    <div class="box-body">
+        <!-- Tìm kiếm dữ liệu -->
+        <form action="#" method="get">
+            <div class="row container-fluid">
+                    <div class="col-sm-2">
+                        <select class="form-control" id="pageSizeSelect" onchange="updatePageSize(this.value)">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="0" selected>Tất Cả</option>
+                        </select>
+                    </div>
+                <div class="col-sm-2">
+                    <input type="text" name="orderTime" class="form-control daterange-picker" placeholder="" />
+                </div>
+
+
+                <div class="input-group">
+                    <input type="text" name="searchValue" class="form-control"
+                           placeholder="Nhập tên công việc hoặc nội dung công việc cần tìm..." autofocus />
+                    <div class="input-group-btn">
+                        <button type="submit" id="search-btn" class="btn btn-flat btn-info">
+                            <i class="fa fa-search"></i> Tìm kiếm
+                        </button>
+                        <a href="~/Todo/Create" class="btn btn-flat btn-primary">
+                            <i class="fa fa-plus"></i> Tạo
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+        <br>
+        <!-- Hiển thị dữ liệu -->
+        <p>
+            Có <strong>@Model.RowCount</strong> công việc trong tổng số <strong id="totalPages">@Model.PageCount</strong> trang
+        </p>
+        <!-- Thông tin nhân viên -->
+        <div class="row">
+            @foreach (var item in Model.DataTodos)
+                {
+                    <div class="col-sm-4">
+                        <div class="card shadow-sm mb-4 todo-card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="card-title mb-0 text-center todo-title">@item.TaskTitle</h5>
+                                <div>
+                                    <a class="btn btn-sm btn-outline-primary btn-edit" href="#" data-url="Todo/Edit/@item.TaskID">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a class="btn btn-sm btn-outline-danger btn-delete" href="#" data-url="Todo/Delete/@item.TaskID">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">
+                                                <i class="fa fa-tasks text-info"></i> Mô tả:
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="fa fa-clock-o text-warning"></i> Thời Gian Bắt Đầu:
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="fa fa-clock-o text-warning"></i> Thời Gian Kết Thúc:
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="fa fa-check text-success"></i> Trạng Thái:
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">@item.TaskDescription</li>
+                                            <li class="list-group-item">@item.TimeStart.ToString("dd-MM-yyyy HH:mm")</li>
+                                            <li class="list-group-item">@item.TimeEnd.ToString("dd-MM-yyyy HH:mm")</li>
+                                            <li class="list-group-item">
+                                                <input type="checkbox" class="task-status-@item.TaskID" @(item.IsFinished ? "checked" : "") />
+                                                <span class="status-label-@item.TaskID">@(item.IsFinished ? "Đã hoàn thành" : "Chưa hoàn thành")</span>
+                                                <script>
+                                                    $('.task-status-@item.TaskID').change(function () {
+                                                        var checkbox = $(this);
+                                                        var isCompleted = checkbox.is(':checked');
+                                                        var formm = {
+                                                            taskId: @item.TaskID,
+                                                            isCompleted: isCompleted
+                                                        }
+                                                        $.ajax({
+                                                            url: '/Todo/UpdateStatus',
+                                                            type: 'POST',
+                                                            data: formm,
+                                                            success: function (response) {
+                                                                if (response.success) {
+                                                                    var statusLabel = checkbox.closest('li').find('.status-label-@item.TaskID');
+                                                                    statusLabel.text(isCompleted ? "Đã hoàn thành" : "Chưa hoàn thành");
+                                                                } else {
+                                                                    alert(response);
+                                                                }
+                                                            },
+                                                            error: function () {
+                                                                alert('Error updating task status');
+                                                            }
+                                                        });
+                                                    });
+                                                </script>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+            }
+        </div>
+        <!--/Thông tin nhân viên-->
+        <div class="text-center">
+            <ul class="pagination">
+                @for (int i = 1; i < Model.PageCount + 1; i++)
+                {
+                    if (i == Model.Page)
+                    {
+                        <li class="active"><a href="#">@i</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="~/?page=@i&searchValue=@Model.SearchValue&timeSearch=@Model.TimeSearch&pageSize=@Model.PageSize">@i</a></li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+<div id="dialogModal" class="modal fade" role="dialog">
+</div>
+    <script>
+        $(document).ready(function () {
+            $("#pageSizeSelect").val(@Model.PageSize);
+        });
+        function updatePageSize(newPageSize) {
+            $.ajax({
+                url: '/Home/UpdatePageSize',
+                type: 'POST',
+                data: { pageSize: newPageSize },
+                success: function () {
+                    location.reload();
+                }
+            });
+        }
+     </script>
+<script src="~/js/edittask.js"></script>
+}

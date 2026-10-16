@@ -1,0 +1,39 @@
+﻿@{
+    @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+    <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu" data-widget="tree">
+                <li>
+                    <a href="~/">
+                        <i class="fa fa-home"></i> <span>Trang Chủ</span>
+                    </a>
+                </li>
+                @if (HttpContextAccessor.HttpContext?.Session.GetInt32("UserID") is not null)
+                {
+                    <!-- Quản lý dữ liệu cá nhân -->
+                    <li class="treeview active">
+                        <a href="#">
+                            <i class="fa fa-cogs"></i> <span>Cài Đặt Thông Tin</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="~/User/"><i class="fa fa-circle-o"></i> Thông Tin Cá Nhân</a></li>
+                            <li><a href="~/User/ChangePwd?"><i class="fa fa-circle-o"></i> Đổi Mật Khẩu</a></li>
+                            <li><a href="~/User/Logout"><i class="fa fa-logout"></i> Đăng Xuất</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Cài đặt view-->
+
+                    <li><a href="~/SettingView"><i class="fa fa-cog"></i> Cài đặt hiển thị</a></li>
+                }
+            </ul>
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+}

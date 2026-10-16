@@ -1,0 +1,55 @@
+﻿@{
+    Layout = null;
+    @model TodoTask
+}
+<div class="modal-dialog">
+    <div class="modal-content">
+        <form class="form-horizontal" action="~/Todo/Delete" method="post">
+            <div class="modal-header bg-primary" style="background-color: #B64747">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title text-center">Xoá Công Việc</h4>
+            </div>
+              <div class="modal-body">
+                  <input type="hidden" name="id" value="@Model.TaskID" />
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Tên Công Việc:</label>
+                    <div class="col-sm-9">
+                        <p class="form-control" id="nametask">@Html.DisplayFor(modelItem => modelItem.TaskTitle)</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Mô Tả Công Việc:</label>
+                    <div class="col-sm-9">
+                        <p class="form-control" id="destask">@Html.DisplayFor(modelItem => modelItem.TaskDescription)</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Trạng Thái:</label>
+                    <div class="col-sm-9">
+                        <p class="form-control" id="statustask">@(Model.IsFinished ? "Đã Hoàn Thành" : "Chưa Hoàn Thành")</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Thời Gian Bắt Đầu:</label>
+                    <div class="col-sm-9">
+                        <p class="form-control" id="timestart">@Html.DisplayFor(modelItem => modelItem.TimeStart)</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Thời Gian Kết Thúc:</label>
+                    <div class="col-sm-9">
+                        <p class="form-control" id="timeend">@Html.DisplayFor(modelItem => modelItem.TimeEnd)</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-danger">
+                    <i class="fa fa-trash"></i> Xoá Công Việc
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Bỏ qua
+                </button>
+            </div>
+        </form> 
+    </div>
+</div>
